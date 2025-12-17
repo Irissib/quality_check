@@ -15,7 +15,6 @@
 
 <audio id="player" controls></audio>
 <p id="status"></p>
-<button id="restart" disabled>Neu aufnehmen</button>
 
 <script>
   let recorder;
@@ -33,7 +32,6 @@
       const blob = new Blob(audioChunks, { type: recorder.mimeType });
       const url = URL.createObjectURL(blob);
       document.getElementById("player").src = url;
-      document.getElementById("restart").disabled = false;
     };
 
     recorder.start();
@@ -48,14 +46,11 @@
     document.getElementById("start").disabled = false;
     document.getElementById("stop").disabled = true;
   };
-  document.getElementById("restart").onclick = async () => {
-  document.getElementById("restart").disabled = true;
-  document.getElementById("stop").click();   // alte Aufnahme stoppen
-  document.getElementById("start").click();  // neue Aufnahme starten
-};
+
 </script>
 
 </body>
 </html>
+
 
 
