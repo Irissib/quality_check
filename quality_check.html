@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Audioaufnahme Test</title>
+</head>
+<body>
+
+<h2>Lokaler Audio-Test</h2>
+
+<button id="start">Start Aufnahme</button>
+<button id="stop" disabled>Stop Aufnahme</button>
+
+<br><br>
+
+<audio id="player" controls></audio>
+
+<script>
+  let recorder;
+  let audioChunks = [];
+
+  document.getElementById("start").onclick = async () => {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+    recorder = new MediaRecorder(stream);
+    audioChunks = [];
+
+    recorder.ondataavailable = e => audioChunks.push(e.data);
+
+    recorder.onstop = () => {
+      const blob = new Blob(audioChunks, { type: recorder.mimeType });
+      const url = URL.createObjectURL(blob);
+      document.getElementById("player").src = url;
+    };
+
+    recorder.start();
+    document.getElementById("start").disabled = true;
+    document.getElementById("stop").disabled = false;
+  };
+
+  document.getElementById("stop").onclick = () => {
+    recorder.stop();
+    document.getElementById("start").disabled = false;
+    document.getElementById("stop").disabled = true;
+  };
+</script>
+
+</body>
+</html>
